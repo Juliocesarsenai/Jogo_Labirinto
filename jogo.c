@@ -26,15 +26,12 @@ int main() {
 	/************************************************ 
 	Declare e inicialize todas as suas variáveis aqui
 	*************************************************/
-	// Exemplo
-	int roboLinha,roboColuna;
 	
 	while (true) {    
 		imprime_mundo(); // imprime situação atual do mundo
 		if (fim_de_jogo()) { // verifica se o jogo acabou
 			break;
 		}
-			if(roboLinha)
 		/************************************************
 			Coloque aqui a sua lógica do jogo 
 			para tentar chegar ao prêmio
