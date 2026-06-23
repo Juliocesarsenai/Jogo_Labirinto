@@ -1,3 +1,5 @@
+//PROBLEMA PARA RESOLVER: o robô pode ficar preso por conta dele ter prioridade em virar a esquerda ou a direita (VEJA TESTANDO O entrada4.txt)
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -12,6 +14,7 @@
 // variáveis globais
 int N=DIMENSION; // dimensão da matriz quadrada que representa o mundo
 char matriz[DIMENSION][DIMENSION]; // matriz representando o mundo
+char matriz_2[DIMENSION][DIMENSION]; // matriz representando o caminho pelo qual já passou, evitando voltas
 int rodada; // rodada (cada tentativa de movimento equivale a uma rodada)
 int roboLinha,roboColuna; // posição do robô
 int premioLinha, premioColuna; // posição do prêmio
@@ -45,14 +48,19 @@ int main() {
         ************************************************/   
         roboLinha=getRoboLinha();
         roboColuna=getRoboColuna();
-        if (roboLinha > 0 && matriz[roboLinha - 1][roboColuna] != '*') {
+        if (roboLinha > 0 && matriz[roboLinha - 1][roboColuna] != '*' && matriz_2[roboLinha - 1][roboColuna] != '.') {
             move(roboLinha - 1, roboColuna);
-        } else if (roboColuna > 0 && matriz[roboLinha][roboColuna - 1] != '*') {
+            matriz_2[roboLinha+1][roboColuna] = '.'; //assim o robô não volta por onde já passou e o caminho da tela não é alterado por um "."
+        } else if (roboColuna > 0 && matriz[roboLinha][roboColuna - 1] != '*' && matriz_2[roboLinha][roboColuna - 1] != '.') {
             move(roboLinha, roboColuna - 1);
-        } else if (roboLinha < DIMENSION - 1 && matriz[roboLinha + 1][roboColuna] != '*') {
+            matriz_2[roboLinha][roboColuna+1] = '.';
+        } else if (roboLinha < DIMENSION - 1 && matriz[roboLinha + 1][roboColuna] != '*' && matriz_2[roboLinha + 1][roboColuna] != '.') {
             move(roboLinha + 1, roboColuna);
-        } else if (roboColuna < DIMENSION - 1 && matriz[roboLinha][roboColuna + 1] != '*') {
+            matriz_2[roboLinha-1][roboColuna] = '.';
+        } else if (roboColuna < DIMENSION - 1 && matriz[roboLinha][roboColuna + 1] != '*' && matriz_2[roboLinha][roboColuna + 1] != '.') {
             move(roboLinha, roboColuna + 1);
+            matriz_2[roboLinha][roboColuna-1] = '.';
+
         }
         
         // espera por 1 segundo para executar próximo movimento
@@ -109,6 +117,7 @@ bool carrega_mundo() {
                 fclose(arquivo);
                 return false;
             }
+            matriz_2[i][j] = matriz[i][j]; //iguala as 2 matrizes para depois alterar a matriz 2 sem afetar o que aparece em tela;
         }
     }
 
@@ -153,7 +162,7 @@ void imprime_mundo() {
 }
 
 bool fim_de_jogo() {
-    if (rodada==40) {
+    if (rodada==60) {
         printf("GAME OVER:SUA ENERGIA ACABOU\n");
         return true;        
     }
