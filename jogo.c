@@ -401,5 +401,6 @@ int getRoboLinha() {
 
 
 int getRoboColuna(){
+
     return roboColuna;
 }
