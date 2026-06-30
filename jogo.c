@@ -198,7 +198,7 @@ bool carrega_mundo() {
 
     // Abre o arquivo para leitura
 
-    arquivo = fopen("entrada4.txt", "r");
+    arquivo = fopen("entrada2.txt", "r");
 
 
 
@@ -322,7 +322,7 @@ void imprime_mundo() {
 
 bool fim_de_jogo() {
 
-    if (rodada==1000) {
+    if (rodada==60) {
 
         printf("GAME OVER:SUA ENERGIA ACABOU\n");
 
